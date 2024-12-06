@@ -1,0 +1,39 @@
+---
+title: "math42_final_proj"
+format: html
+editor: visual
+---
+
+## 
+
+```{r}
+library(deSolve)
+library(tidyverse)
+```
+
+```{r}
+
+parameters <- c(a = 1/15, b = 4.5, c = 4, d = 0.03)
+
+state <- c(X = 0)
+
+dxdt <-function(t, state, parameters) {
+  with(as.list(c(state, parameters)),{
+  # rate of change
+  dX <- a - (((b*X + c*X + d*X ) * .15 ) /  19.3)
+
+ # return the rate of change
+  list(c(dX))
+ })
+}  
+times <- seq(0, 75, by = 1)
+```
+
+```{r}
+out <- ode(y = state, times = times, func = dxdt, parms = parameters)
+View(out)
+```
+
+```{r}
+plot(out, xlab = "time", ylab = "-")
+```
