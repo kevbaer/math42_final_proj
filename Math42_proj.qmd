@@ -16,25 +16,27 @@ library(tidyverse)
 ```{r}
 #| label: conditions
 #| 
-parameters <- c(a = 1/150, b = 4.5, c = 4, d = 0.03)
+parameters <- c(a = 1/150, b = 4.5, c = 4, d = 0.3)
 
 state <- c(X = 0)
 
 dxdt <-function(t, state, parameters) {
   with(as.list(c(state, parameters)),{
   # rate of change
-  dX <- a - (((b*X + c*X + d*X ) * 1/150 ) /  8.8)
+  dX <- a - ((( rnorm(1, b, .005)*X +  rnorm(1, c, 0.05) *X + rnorm(1, d, .05)*X ) * 1/150 ) /  10)
 
  # return the rate of change
   list(c(dX))
  })
 }  
-times <- seq(0, 700, by = 1)
+times <- seq(0, 400, by = 1)
 ```
 
 ```{r}
 #| label: solution
-#| 
+
+set.seed(11042004)
 out <- ode(y = state, times = times, func = dxdt, parms = parameters)
 plot(out, xlab = "time", ylab = "-")
+abline(h = 1)
 ```
